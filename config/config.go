@@ -54,11 +54,12 @@ type (
 	}
 
 	FileTargetConfig struct {
-		Name     string `xml:"name,attr"`
-		IsLog    bool   `xml:"islog,attr"`
-		Layout   string `xml:"layout,attr"`
-		Encode   string `xml:"encode,attr"`
-		FileName string `xml:"filename,attr"`
+		Name        string `xml:"name,attr"`
+		IsLog       bool   `xml:"islog,attr"`
+		Layout      string `xml:"layout,attr"`
+		Encode      string `xml:"encode,attr"`
+		FileMaxSize int64  `xml:"filemaxsize,attr"` //日志文件最大容量，单位为KB
+		FileName    string `xml:"filename,attr"`
 	}
 
 	UdpTargetConfig struct {

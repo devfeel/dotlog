@@ -11,13 +11,14 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+	"time"
 )
 
 type FileTarget struct {
 	BaseTarget
 
 	FileName     string
-	FileMaxSize  int64
+	FileMaxSize  int64 //日志文件最大字节数
 	RealFileName string
 
 	logChan chan string
@@ -31,6 +32,7 @@ func NewFileTarget(conf *config.FileTargetConfig) *FileTarget {
 	t.Encode = conf.Encode
 	t.Layout = conf.Layout
 	t.FileName = conf.FileName
+	t.FileMaxSize = conf.FileMaxSize * 1024
 	//启动异步写文件
 	go t.handleLog()
 	return t
@@ -67,6 +69,22 @@ func (t *FileTarget) WriteLog(log string, useLayout string, level string) {
 func (t *FileTarget) writeTarget(log string) {
 	//TODO:如何规避每次都需要CompileLayout?
 	fileName := t.getRealFileName()
+
+	if fileInfo, err := os.Stat(fileName); err != nil {
+		internal.GlobalInnerLogger.Error(err, "golog.writeTarget os.Stat error")
+	} else {
+		if t.FileMaxSize > 0 {
+			//如果设置了FileMaxSize，则进行判断
+			if fileInfo.Size() >= t.FileMaxSize {
+				//modify old filename
+				modifyFileName := fileName + "." + time.Now().Format(_const.DefaultNoSeparatorTimeLayout) + ".logbak"
+				err := os.Rename(fileName, modifyFileName)
+				if err != nil {
+					internal.GlobalInnerLogger.Error(err, "golog.writeTarget os.Rename(", fileName, ", ", modifyFileName, ") error")
+				}
+			}
+		}
+	}
 
 	pathDir := filepath.Dir(fileName)
 	pathExists := _file.Exist(pathDir)
