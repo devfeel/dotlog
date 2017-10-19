@@ -7,7 +7,7 @@ import (
 var log1 dotlog.Logger
 
 func main() {
-	dotlog.StartLogService("d:/gotmp/golog/log.conf")
+	dotlog.StartLogService("./log.conf")
 	log1 = dotlog.GetLogger("log1")
 	for i := 0; i < 100; i++ {
 		log1.Info("example-normal test main")
