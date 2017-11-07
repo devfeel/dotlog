@@ -21,7 +21,7 @@ type EMailTarget struct {
 }
 
 func NewEMailTarget(conf *config.EMailTargetConfig) *EMailTarget {
-	t := &EMailTarget{logChan: make(chan string, _const.DefaultChanSize)}
+	t := &EMailTarget{logChan: make(chan string, GetChanSize())}
 	t.TargetType = _const.TargetType_EMail
 	t.Name = conf.Name
 	t.IsLog = conf.IsLog

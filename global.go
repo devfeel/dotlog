@@ -12,7 +12,6 @@ var (
 	GlobalTargetMap map[string]targets.Target
 	GlobalVariable  *layout.Variable
 	GlobalLoggerMap map[string]Logger
-	GlobalConfig    *config.AppConfig
 )
 
 func init() {
@@ -22,28 +21,29 @@ func init() {
 }
 
 func StartLogService(configFile string) error {
-	var err error
-	GlobalConfig, err = config.InitConfig(configFile)
+	conf, err := config.InitConfig(configFile)
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
 
+	config.GlobalAppConfig = conf
+
 	//init innerlogger
-	internal.InitInnerLogger(GlobalConfig.Global.InnerLogPath, GlobalConfig.Global.InnerLogEncode)
+	internal.InitInnerLogger(conf.Global.InnerLogPath, conf.Global.InnerLogEncode)
 
 	internal.GlobalInnerLogger.Debug("*******************New Begin***********************")
 	internal.GlobalInnerLogger.Debug("devfeel.dotlog InitConfig success")
 
 	//init variable
-	for _, v := range GlobalConfig.Variables {
+	for _, v := range conf.Variables {
 		GlobalVariable.RegisterUserVar(v.Name, v.Value)
 	}
 	internal.GlobalInnerLogger.Debug("RegisterUserVar success - total:", len(GlobalVariable.UserVar))
 
 	//init file target
 	var count int
-	for _, v := range GlobalConfig.Targets.FileTargets {
+	for _, v := range conf.Targets.FileTargets {
 		GlobalTargetMap[v.Name] = targets.NewFileTarget(v)
 		count++
 	}
@@ -51,7 +51,7 @@ func StartLogService(configFile string) error {
 
 	//init udp target
 	count = 0
-	for _, v := range GlobalConfig.Targets.UdpTargets {
+	for _, v := range conf.Targets.UdpTargets {
 		GlobalTargetMap[v.Name] = targets.NewUdpTarget(v)
 		count++
 	}
@@ -59,7 +59,7 @@ func StartLogService(configFile string) error {
 
 	//init http target
 	count = 0
-	for _, v := range GlobalConfig.Targets.HttpTargets {
+	for _, v := range conf.Targets.HttpTargets {
 		GlobalTargetMap[v.Name] = targets.NewHttpTarget(v)
 		count++
 	}
@@ -67,14 +67,14 @@ func StartLogService(configFile string) error {
 
 	//init email target
 	count = 0
-	for _, v := range GlobalConfig.Targets.EMailTargets {
+	for _, v := range conf.Targets.EMailTargets {
 		GlobalTargetMap[v.Name] = targets.NewEMailTarget(v)
 		count++
 	}
 	internal.GlobalInnerLogger.Debug("InitEMailTargets success - total:", count)
 
 	//init logger
-	for _, v := range GlobalConfig.Loggers {
+	for _, v := range conf.Loggers {
 		GlobalLoggerMap[v.Name] = NewLogger(v)
 	}
 	internal.GlobalInnerLogger.Debug("InitLogger success - total:", len(GlobalLoggerMap))
