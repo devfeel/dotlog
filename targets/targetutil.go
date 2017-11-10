@@ -6,6 +6,14 @@ import (
 	"strings"
 )
 
+// GetChanSize get chan size with config or const
+func GetChanSize() int {
+	if config.GlobalAppConfig.Global.ChanSize >= 0 {
+		return config.GlobalAppConfig.Global.ChanSize
+	}
+	return _const.DefaultChanSize
+}
+
 func GetDefaultFileTarget(name, level string) Target {
 	conf := &config.FileTargetConfig{
 		Name:     name + "_file_" + level,

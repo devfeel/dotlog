@@ -17,7 +17,7 @@ type HttpTarget struct {
 }
 
 func NewHttpTarget(conf *config.HttpTargetConfig) *HttpTarget {
-	t := &HttpTarget{logChan: make(chan string, _const.DefaultChanSize)}
+	t := &HttpTarget{logChan: make(chan string, GetChanSize())}
 	t.TargetType = _const.TargetType_Http
 	t.Name = conf.Name
 	t.IsLog = conf.IsLog

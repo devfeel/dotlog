@@ -12,6 +12,14 @@ const (
 	ConfigType_Xml = "xml"
 )
 
+var (
+	GlobalAppConfig *AppConfig
+)
+
+func init() {
+	GlobalAppConfig = &AppConfig{}
+}
+
 type (
 	AppConfig struct {
 		XMLName   xml.Name          `xml:"config" json:"-"`
@@ -23,6 +31,7 @@ type (
 
 	GlobalConfig struct {
 		IsLog          bool   `xml:"islog,attr"`
+		ChanSize       int    `xml:"chansize,attr"` //日志队列长度，默认为DefaultChanSize = 1000
 		InnerLogPath   string `xml:"innerlogpath,attr"`
 		InnerLogEncode string `xml:"innerlogencode,attr"`
 	}

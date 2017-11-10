@@ -25,7 +25,7 @@ type FileTarget struct {
 }
 
 func NewFileTarget(conf *config.FileTargetConfig) *FileTarget {
-	t := &FileTarget{logChan: make(chan string, _const.DefaultChanSize)}
+	t := &FileTarget{logChan: make(chan string, GetChanSize())}
 	t.TargetType = _const.TargetType_File
 	t.Name = conf.Name
 	t.IsLog = conf.IsLog
@@ -71,7 +71,8 @@ func (t *FileTarget) writeTarget(log string) {
 	fileName := t.getRealFileName()
 
 	if fileInfo, err := os.Stat(fileName); err != nil {
-		internal.GlobalInnerLogger.Error(err, "golog.writeTarget os.Stat error")
+		//ignore stat error, fixed for #1 bug: golog.writeTarget os.Stat error
+		//internal.GlobalInnerLogger.Error(err, "golog.writeTarget os.Stat error")
 	} else {
 		if t.FileMaxSize > 0 {
 			//如果设置了FileMaxSize，则进行判断
