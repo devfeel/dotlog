@@ -1,5 +1,8 @@
 ## dotlog版本记录：
 
+#### Version 0.9.4
+* EMailTarget增加MailNickName设置，用于设置发件人友好名称
+* 2018-01-19 15:30
 
 #### Version 0.9.3
 * 新增FmtTarget，用于向控制台输出日志，同时如果为Error级别消息，同步向StdErr输出

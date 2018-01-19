@@ -9,6 +9,7 @@ import (
 type MailConfig struct {
 	Host         string
 	FromAccount  string
+	FromNickName string
 	FromPassword string
 	ToMail       string //if have multi account,use ";" connect
 	Subject      string
@@ -31,7 +32,11 @@ func SendEMail(config *MailConfig) error {
 		content_type = "Content-Type: text/plain" + "; charset=UTF-8"
 	}
 
-	msg := []byte("To: " + config.ToMail + "\r\nFrom: " + config.FromAccount + ">\r\nSubject: " + config.Subject + "\r\n" + content_type + "\r\n\r\n" + config.Body)
+	if config.FromNickName == ""{
+		config.FromNickName = config.FromAccount
+	}
+
+	msg := []byte("To: " + config.ToMail + "\r\nFrom: " + config.FromNickName + "<"+config.FromAccount+">\r\nSubject: " + config.Subject + "\r\n" + content_type + "\r\n\r\n" + config.Body)
 	send_to := strings.Split(config.ToMail, ";")
 	err := sendMailWithNoTSL(config.Host, auth, config.FromAccount, send_to, msg)
 	return err

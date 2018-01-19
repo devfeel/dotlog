@@ -102,6 +102,7 @@ type (
 		Encode       string `xml:"encode,attr"`
 		MailServer   string `xml:"mailserver,attr"`
 		MailAccount  string `xml:"mailaccount,attr"`
+		MailNickName string `xml:"mailnickname,attr"`
 		MailPassword string `xml:"mailpassword,attr"`
 		ToMail       string `xml:"tomail,attr"`
 		Subject      string `xml:"subject,attr"`

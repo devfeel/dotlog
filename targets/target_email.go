@@ -13,6 +13,7 @@ type EMailTarget struct {
 	BaseTarget
 
 	MailServer   string
+	MailNickName string
 	MailAccount  string
 	MailPassword string
 	ToMail       string
@@ -28,10 +29,16 @@ func NewEMailTarget(conf *config.EMailTargetConfig) *EMailTarget {
 	t.Encode = conf.Encode
 	t.Layout = conf.Layout
 	t.MailServer = layout.CompileLayout(conf.MailServer)
+	t.MailNickName = layout.CompileLayout(conf.MailNickName)
 	t.MailAccount = layout.CompileLayout(conf.MailAccount)
 	t.MailPassword = layout.CompileLayout(conf.MailPassword)
 	t.ToMail = layout.CompileLayout(conf.ToMail)
 	t.Subject = layout.CompileLayout(conf.Subject)
+
+	if t.MailNickName == ""{
+		t.MailNickName = t.MailAccount
+	}
+
 	//启动异步写文件
 	go t.handleLog()
 	return t
@@ -62,6 +69,7 @@ func (t *EMailTarget) WriteLog(log string, useLayout string, level string) {
 func (t *EMailTarget) writeTarget(log string) {
 	mail := new(_email.MailConfig)
 	mail.Host = t.MailServer
+	mail.FromNickName = t.MailNickName
 	mail.FromAccount = t.MailAccount
 	mail.FromPassword = t.MailPassword
 	mail.ToMail = t.ToMail

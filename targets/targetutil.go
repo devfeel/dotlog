@@ -43,6 +43,7 @@ func GetDefaultEMailTarget(name, level string) Target {
 		Encode:       _const.DefaultEncode,
 		Layout:       "{DateTime} {LogLevel} {message}",
 		MailServer:   "{MailServer}",
+		MailNickName: "{MailNickName}",
 		MailAccount:  "{MailAccount}",
 		MailPassword: "{MailPassword}",
 		ToMail:       "{ToMail}",

@@ -7,7 +7,7 @@ import (
 
 func main() {
 	dotlog.StartLogService("./log.conf")
-	log1 := dotlog.GetLogger("FileLogger")
+	log1 := dotlog.GetLogger("ClassicsLogger")
 	log1.Trace("example-normal trace main")
 	log1.Debug("example-normal debug main")
 	log1.Info("example-normal info main")
