@@ -25,6 +25,17 @@ func GetDefaultFileTarget(name, level string) Target {
 	return NewFileTarget(conf)
 }
 
+func GetDefaultFmtTarget(name, level string) Target {
+	conf := &config.FmtTargetConfig{
+		Name:     name + "_fmt_" + level,
+		IsLog:    true,
+		Encode:   _const.DefaultEncode,
+		Layout:   "{DateTime} {LogLevel} {message}",
+	}
+	return NewFmtTarget(conf)
+}
+
+
 func GetDefaultEMailTarget(name, level string) Target {
 	conf := &config.EMailTargetConfig{
 		Name:         name + "_mail_" + level,

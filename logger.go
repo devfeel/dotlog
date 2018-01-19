@@ -108,6 +108,14 @@ func NewLogger(conf *config.LoggerConfig) *logger {
 		log = updateFileLogger(log)
 	}
 
+	if conf.ConfigMode == _const.ConfigMode_Fmt {
+		log = updateFmtLogger(log)
+	}
+
+	if conf.ConfigMode == _const.ConfigMode_FileFmt {
+		log = updateFileFmtLogger(log)
+	}
+
 	return log
 }
 
@@ -138,6 +146,40 @@ func updateFileLogger(logger *logger) *logger {
 	logger.addLevelTarget(_const.LogLevel_Info, targets.GetDefaultFileTarget(targetName, _const.LogLevel_Info))
 	logger.addLevelTarget(_const.LogLevel_Warn, targets.GetDefaultFileTarget(targetName, _const.LogLevel_Warn))
 	logger.addLevelTarget(_const.LogLevel_Error, targets.GetDefaultFileTarget(targetName, _const.LogLevel_Error))
+	return logger
+}
+
+func updateFmtLogger(logger *logger) *logger {
+	targetName := logger.LoggerName()
+	if strings.LastIndex(strings.ToLower(targetName), "logger") == (len(targetName) - 6) {
+		targetName = _string.Substr(targetName, 0, len(targetName)-6)
+	}
+
+	logger.addLevelTarget(_const.LogLevel_Trace, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Trace))
+	logger.addLevelTarget(_const.LogLevel_Debug, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Debug))
+	logger.addLevelTarget(_const.LogLevel_Info, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Info))
+	logger.addLevelTarget(_const.LogLevel_Warn, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Warn))
+	logger.addLevelTarget(_const.LogLevel_Error, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Error))
+	return logger
+}
+
+
+func updateFileFmtLogger(logger *logger) *logger {
+	targetName := logger.LoggerName()
+	if strings.LastIndex(strings.ToLower(targetName), "logger") == (len(targetName) - 6) {
+		targetName = _string.Substr(targetName, 0, len(targetName)-6)
+	}
+	logger.addLevelTarget(_const.LogLevel_Trace, targets.GetDefaultFileTarget(targetName, _const.LogLevel_Trace))
+	logger.addLevelTarget(_const.LogLevel_Debug, targets.GetDefaultFileTarget(targetName, _const.LogLevel_Debug))
+	logger.addLevelTarget(_const.LogLevel_Info, targets.GetDefaultFileTarget(targetName, _const.LogLevel_Info))
+	logger.addLevelTarget(_const.LogLevel_Warn, targets.GetDefaultFileTarget(targetName, _const.LogLevel_Warn))
+	logger.addLevelTarget(_const.LogLevel_Error, targets.GetDefaultFileTarget(targetName, _const.LogLevel_Error))
+
+	logger.addLevelTarget(_const.LogLevel_Trace, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Trace))
+	logger.addLevelTarget(_const.LogLevel_Debug, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Debug))
+	logger.addLevelTarget(_const.LogLevel_Info, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Info))
+	logger.addLevelTarget(_const.LogLevel_Warn, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Warn))
+	logger.addLevelTarget(_const.LogLevel_Error, targets.GetDefaultFmtTarget(targetName, _const.LogLevel_Error))
 	return logger
 }
 
