@@ -6,6 +6,7 @@ import (
 	"github.com/devfeel/dotlog/internal"
 	"github.com/devfeel/dotlog/layout"
 	"github.com/devfeel/dotlog/targets"
+	"github.com/devfeel/dotlog/const"
 )
 
 var (
@@ -33,7 +34,7 @@ func StartLogService(configFile string) error {
 	internal.InitInnerLogger(conf.Global.InnerLogPath, conf.Global.InnerLogEncode)
 
 	internal.GlobalInnerLogger.Debug("*******************New Begin***********************")
-	internal.GlobalInnerLogger.Debug("devfeel.dotlog InitConfig success")
+	internal.GlobalInnerLogger.Debug("devfeel.dotlog ["+ _const.Version+"] InitConfig success")
 
 	//init variable
 	for _, v := range conf.Variables {
@@ -72,6 +73,15 @@ func StartLogService(configFile string) error {
 		count++
 	}
 	internal.GlobalInnerLogger.Debug("InitEMailTargets success - total:", count)
+
+	//init fmt target
+	count = 0
+	for _, v := range conf.Targets.FmtTargets {
+		GlobalTargetMap[v.Name] = targets.NewFmtTarget(v)
+		count++
+	}
+	internal.GlobalInnerLogger.Debug("InitFmtTargets success - total:", count)
+
 
 	//init logger
 	for _, v := range conf.Loggers {

@@ -1,5 +1,9 @@
 package _const
 
+const(
+	Version = "0.9.3"
+)
+
 const (
 	DefaultEncode   = "gb2312"
 	DefaultChanSize = 1000
@@ -16,6 +20,8 @@ const (
 const (
 	ConfigMode_Classics = "classics"
 	ConfigMode_File     = "file"
+	ConfigMode_Fmt     = "fmt"
+	ConfigMode_FileFmt     = "filefmt"
 )
 
 const (
@@ -23,6 +29,7 @@ const (
 	TargetType_Udp   = "Udp"
 	TargetType_Http  = "Http"
 	TargetType_EMail = "EMail"
+	TargetType_Fmt  = "Fmt"
 )
 
 const (

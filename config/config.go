@@ -60,6 +60,7 @@ type (
 		UdpTargets   []*UdpTargetConfig   `xml:"udp>target"`
 		HttpTargets  []*HttpTargetConfig  `xml:"http>target"`
 		EMailTargets []*EMailTargetConfig `xml:"email>target"`
+		FmtTargets []*FmtTargetConfig `xml:"fmt>target"`
 	}
 
 	FileTargetConfig struct {
@@ -85,6 +86,13 @@ type (
 		Layout  string `xml:"layout,attr"`
 		Encode  string `xml:"encode,attr"`
 		HttpUrl string `xml:"httpurl,attr"`
+	}
+
+	FmtTargetConfig struct {
+		Name    string `xml:"name,attr"`
+		IsLog   bool   `xml:"islog,attr"`
+		Layout  string `xml:"layout,attr"`
+		Encode  string `xml:"encode,attr"`
 	}
 
 	EMailTargetConfig struct {
@@ -170,6 +178,18 @@ func (c *EMailTargetConfig) UnmarshalXML(d *xml.Decoder, start xml.StartElement)
 		return err
 	}
 	*c = (EMailTargetConfig)(item)
+	return nil
+}
+
+func (c *FmtTargetConfig) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type innerType FmtTargetConfig // new type to prevent recursion
+	item := innerType{
+		IsLog: true,
+	}
+	if err := d.DecodeElement(&item, &start); err != nil {
+		return err
+	}
+	*c = (FmtTargetConfig)(item)
 	return nil
 }
 
