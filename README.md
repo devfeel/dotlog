@@ -50,7 +50,8 @@ log.conf
 
 ## 3. Features
 * 简单易用，100%配置化
-* 支持文件、UDP、Http、EMail四种日志目标
+* 支持文件、UDP、Http、EMail、StdOut四种日志目标
+* 支持配置模板：ConfigMode_Classics、ConfigMode_File、ConfigMode_Fmt、ConfigMode_FileFmt
 * 支持自定义变量
 * 文件支持单文件最大尺寸设置
 * 更多待完善
