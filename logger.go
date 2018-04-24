@@ -16,15 +16,15 @@ type Logger interface {
 	IsLog() bool
 
 	Trace(content interface{}) Logger
-	TraceFormat(content ...interface{}) Logger
+	TraceFormat(format string, content ...interface{}) Logger
 	Debug(content interface{}) Logger
-	DebugFormat(content ...interface{}) Logger
+	DebugFormat(format string, content ...interface{}) Logger
 	Info(content interface{}) Logger
-	InfoFormat(content ...interface{}) Logger
+	InfoFormat(format string, content ...interface{}) Logger
 	Warn(content interface{}) Logger
-	WarnFormat(content ...interface{}) Logger
+	WarnFormat(format string, content ...interface{}) Logger
 	Error(err error, content interface{}) Logger
-	ErrorFormat(err error, content ...interface{}) Logger
+	ErrorFormat(err error, format string, content ...interface{}) Logger
 }
 
 type (
@@ -216,38 +216,38 @@ func (log *logger) Trace(content interface{}) Logger {
 	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Trace))
 }
 
-func (log *logger) TraceFormat(content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Trace))
+func (log *logger) TraceFormat(format string, content ...interface{}) Logger {
+	return log.writeLog(nil, fmt.Sprintf(format, content), log.getLoggerLevel(_const.LogLevel_Trace))
 }
 
 func (log *logger) Debug(content interface{}) Logger {
 	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Debug))
 }
 
-func (log *logger) DebugFormat(content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Debug))
+func (log *logger) DebugFormat(format string, content ...interface{}) Logger {
+	return log.writeLog(nil, fmt.Sprintf(format, content), log.getLoggerLevel(_const.LogLevel_Debug))
 }
 
 func (log *logger) Info(content interface{}) Logger {
 	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Info))
 }
 
-func (log *logger) InfoFormat(content ...interface{}) Logger {
+func (log *logger) InfoFormat(format string, content ...interface{}) Logger {
 	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Info))
 }
 
 func (log *logger) Warn(content interface{}) Logger {
 	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Warn))
 }
-func (log *logger) WarnFormat(content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Warn))
+func (log *logger) WarnFormat(format string, content ...interface{}) Logger {
+	return log.writeLog(nil, fmt.Sprintf(format, content), log.getLoggerLevel(_const.LogLevel_Warn))
 }
 
 func (log *logger) Error(err error, content interface{}) Logger {
 	return log.writeLog(err, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Error))
 }
-func (log *logger) ErrorFormat(err error, content ...interface{}) Logger {
-	return log.writeLog(err, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Error))
+func (log *logger) ErrorFormat(err error, format string, content ...interface{}) Logger {
+	return log.writeLog(err, fmt.Sprintf(format, content), log.getLoggerLevel(_const.LogLevel_Error))
 }
 
 func (log *logger) writeLog(err error, content string, level *LoggerLevel) Logger {
