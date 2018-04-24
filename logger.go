@@ -217,7 +217,7 @@ func (log *logger) Trace(content interface{}) Logger {
 }
 
 func (log *logger) TraceFormat(format string, content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprintf(format, content), log.getLoggerLevel(_const.LogLevel_Trace))
+	return log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Trace))
 }
 
 func (log *logger) Debug(content interface{}) Logger {
@@ -225,7 +225,7 @@ func (log *logger) Debug(content interface{}) Logger {
 }
 
 func (log *logger) DebugFormat(format string, content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprintf(format, content), log.getLoggerLevel(_const.LogLevel_Debug))
+	return log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Debug))
 }
 
 func (log *logger) Info(content interface{}) Logger {
@@ -233,21 +233,21 @@ func (log *logger) Info(content interface{}) Logger {
 }
 
 func (log *logger) InfoFormat(format string, content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Info))
+	return log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Info))
 }
 
 func (log *logger) Warn(content interface{}) Logger {
 	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Warn))
 }
 func (log *logger) WarnFormat(format string, content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprintf(format, content), log.getLoggerLevel(_const.LogLevel_Warn))
+	return log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Warn))
 }
 
 func (log *logger) Error(err error, content interface{}) Logger {
 	return log.writeLog(err, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Error))
 }
 func (log *logger) ErrorFormat(err error, format string, content ...interface{}) Logger {
-	return log.writeLog(err, fmt.Sprintf(format, content), log.getLoggerLevel(_const.LogLevel_Error))
+	return log.writeLog(err, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Error))
 }
 
 func (log *logger) writeLog(err error, content string, level *LoggerLevel) Logger {
