@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+const defaultLayout = "{DateTime} {LogLevel} {message}"
+
 // GetChanSize get chan size with config or const
 func GetChanSize() int {
 	if config.GlobalAppConfig.Global.ChanSize >= 0 {
@@ -14,34 +16,43 @@ func GetChanSize() int {
 	return _const.DefaultChanSize
 }
 
-func GetDefaultFileTarget(name, level string) Target {
+func GetDefaultFileTarget(name, level, layout string) Target {
+	if layout == ""{
+		layout = defaultLayout
+	}
 	conf := &config.FileTargetConfig{
 		Name:     name + "_file_" + level,
 		FileName: "{LogDateDir}/" + name + "_" + strings.ToLower(level) + ".log",
 		IsLog:    true,
 		Encode:   _const.DefaultEncode,
-		Layout:   "{DateTime} {LogLevel} {message}",
+		Layout:   layout,
 	}
 	return NewFileTarget(conf)
 }
 
-func GetDefaultFmtTarget(name, level string) Target {
+func GetDefaultFmtTarget(name, level, layout string) Target {
+	if layout == ""{
+		layout = defaultLayout
+	}
 	conf := &config.FmtTargetConfig{
 		Name:     name + "_fmt_" + level,
 		IsLog:    true,
 		Encode:   _const.DefaultEncode,
-		Layout:   "{DateTime} {LogLevel} {message}",
+		Layout:   layout,
 	}
 	return NewFmtTarget(conf)
 }
 
 
-func GetDefaultEMailTarget(name, level string) Target {
+func GetDefaultEMailTarget(name, level, layout string) Target {
+	if layout == ""{
+		layout = defaultLayout
+	}
 	conf := &config.EMailTargetConfig{
 		Name:         name + "_mail_" + level,
 		IsLog:        true,
 		Encode:       _const.DefaultEncode,
-		Layout:       "{DateTime} {LogLevel} {message}",
+		Layout:       layout,
 		MailServer:   "{MailServer}",
 		MailNickName: "{MailNickName}",
 		MailAccount:  "{MailAccount}",

@@ -1,5 +1,9 @@
 ## dotlog版本记录：
 
+#### Version 0.9.6
+* Bug fixed: use "Logger.Layout" set info if you config it and use config mode
+* 2018-11-02 19:00
+
 #### Version 0.9.5
 * 调整：TraceFormat\DebugFormat\InfoFormat\WarnFormat\ErrorFormat新增参数format
 * 2018-04-24 09:00

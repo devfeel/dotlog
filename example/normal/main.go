@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/devfeel/dotlog"
 	"github.com/pkg/errors"
+	"time"
 )
 
 func main() {
@@ -13,7 +14,10 @@ func main() {
 	log1.Info("example-normal info main")
 	log1.Warn("example-normal warn main")
 	log1.Error(errors.New("example-normal error main"), "example-normal error main")
+
+	log2 := dotlog.GetLogger("log1")
+	log2.Trace("example-normal trace main - log1")
 	for{
-		select{}
+		time.Sleep(time.Hour)
 	}
 }
