@@ -1,5 +1,9 @@
 ## dotlog版本记录：
 
+#### Version 0.9.7
+* New Feature: add dotlog.SprintSpacing to formats using the default formats 
+* 2019-06-14 10:00
+
 #### Version 0.9.6
 * Bug fixed: use "Logger.Layout" set info if you config it and use config mode
 * 2018-11-02 19:00
