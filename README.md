@@ -10,10 +10,15 @@ go get -u github.com/devfeel/dotlog
 ## 2. Getting Started
 ```go
 func main() {
-    //请确保log.conf与你的执行文件同目录
+	//请确保log.conf与你的执行文件同目录
 	dotlog.StartLogService("log.conf")
 	log1 := dotlog.GetLogger("FileLogger")
 	log1.Info("example-normal test main")
+	log1.InfoS("example-normal", true, time.Now(), "other info")
+	log1.InfoF("example %v", time.Now)
+	for {
+		time.Sleep(time.Hour)
+	}
 }
 ```
 log.conf
@@ -50,7 +55,7 @@ log.conf
 
 ## 3. Features
 * 简单易用，100%配置化
-* 支持文件、UDP、Http、EMail、StdOut四种日志目标
+* 支持File、UDP、Http、EMail、StdOut五种日志目标
 * 支持配置模板：ConfigMode_Classics、ConfigMode_File、ConfigMode_Fmt、ConfigMode_FileFmt
 * 支持自定义变量
 * 文件支持单文件最大尺寸设置
