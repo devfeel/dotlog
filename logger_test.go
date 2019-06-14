@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func Test_Info(t *testing.T) {
+func TestLogger_Info(t *testing.T) {
 	err := StartLogService("d:/gotmp/golog/log.conf")
 	fmt.Println(err)
 
@@ -17,6 +17,20 @@ func Test_Info(t *testing.T) {
 
 	time.Sleep(time.Second * 10)
 }
+
+func TestLogger_InfoS(t *testing.T) {
+	err := StartLogService("d:/gotmp/golog/log.conf")
+	fmt.Println(err)
+
+	log1 := GetLogger("log1")
+	log1.InfoS("Test_Info", 1, true, "test2")
+	time.Sleep(time.Second * 10)
+}
+
+func TestLogger_InfoF(t *testing.T) {
+
+}
+
 func BenchmarkTest_Info(b *testing.B) {
 	err := StartLogService("d:/gotmp/golog/log.conf")
 	fmt.Println(err)

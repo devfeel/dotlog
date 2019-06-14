@@ -1,7 +1,11 @@
 ## dotlog版本记录：
 
 #### Version 0.9.8
-* Architecture: move xxxxFromat to xxxxF 
+* Architecture: move xxxxFormat to xxxxF 
+* New Feature: add logger.TraceS\DebugS\InfoS\WarnS\ErrorS(content ...interface{}), default will use SprintSpacing format
+* Detail:
+    - DebugS mean DebugSpacing
+    - DebugF mean DebugFormat
 * 2019-06-14 11:00
 
 #### Version 0.9.7
