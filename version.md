@@ -1,5 +1,9 @@
 ## dotlog版本记录：
 
+#### Version 0.9.8
+* Architecture: move xxxxFromat to xxxxF 
+* 2019-06-14 11:00
+
 #### Version 0.9.7
 * New Feature: add dotlog.SprintSpacing to formats using the default formats 
 * 2019-06-14 10:00

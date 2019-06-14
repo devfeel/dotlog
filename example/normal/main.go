@@ -1,8 +1,8 @@
 package main
 
 import (
+	"errors"
 	"github.com/devfeel/dotlog"
-	"github.com/pkg/errors"
 	"time"
 )
 
@@ -17,7 +17,7 @@ func main() {
 
 	log2 := dotlog.GetLogger("log1")
 	log2.Trace("example-normal trace main - log1")
-	for{
+	for {
 		time.Sleep(time.Hour)
 	}
 }
