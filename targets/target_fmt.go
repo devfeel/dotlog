@@ -1,12 +1,12 @@
 package targets
 
 import (
+	"fmt"
 	"github.com/devfeel/dotlog/config"
 	"github.com/devfeel/dotlog/const"
 	"github.com/devfeel/dotlog/layout"
-	"strings"
-	"fmt"
 	"os"
+	"strings"
 )
 
 type FmtTarget struct {
@@ -38,8 +38,9 @@ func (t *FmtTarget) WriteLog(log string, useLayout string, level string) {
 }
 
 func (t *FmtTarget) writeTarget(log string, level string) {
-	fmt.Println(log)
-	if level == _const.LogLevel_Error{
+	if level == _const.LogLevel_Error {
 		os.Stderr.WriteString(log)
+	} else {
+		fmt.Println(log)
 	}
 }

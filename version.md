@@ -1,8 +1,9 @@
 ## dotlog版本记录：
 
 #### Version 0.9.9
-* Architecture: 调整Logger API定义，日志函数移除Logger返回参数 
-* 2020-01-05 11:00
+* Architecture: 调整Logger API定义，日志函数移除Logger返回参数
+* Fix: 修正FmtTarget在Error级别时输出两遍内容的问题 
+* 2020-01-05 20:00 at ShangHai
 
 #### Version 0.9.8
 * Architecture: move xxxxFormat to xxxxF 
