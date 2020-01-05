@@ -15,21 +15,21 @@ type Logger interface {
 	LoggerName() string
 	IsLog() bool
 
-	Trace(content interface{}) Logger
-	TraceS(content ...interface{}) Logger
-	TraceF(format string, content ...interface{}) Logger
-	Debug(content interface{}) Logger
-	DebugS(content ...interface{}) Logger
-	DebugF(format string, content ...interface{}) Logger
-	Info(content interface{}) Logger
-	InfoS(content ...interface{}) Logger
-	InfoF(format string, content ...interface{}) Logger
-	Warn(content interface{}) Logger
-	WarnS(content ...interface{}) Logger
-	WarnF(format string, content ...interface{}) Logger
-	Error(err error, content interface{}) Logger
-	ErrorS(err error, content ...interface{}) Logger
-	ErrorF(err error, format string, content ...interface{}) Logger
+	Trace(content interface{})
+	TraceS(content ...interface{})
+	TraceF(format string, content ...interface{})
+	Debug(content interface{})
+	DebugS(content ...interface{})
+	DebugF(format string, content ...interface{})
+	Info(content interface{})
+	InfoS(content ...interface{})
+	InfoF(format string, content ...interface{})
+	Warn(content interface{})
+	WarnS(content ...interface{})
+	WarnF(format string, content ...interface{})
+	Error(err error, content interface{})
+	ErrorS(err error, content ...interface{})
+	ErrorF(err error, format string, content ...interface{})
 }
 
 type (
@@ -216,64 +216,64 @@ func (log *logger) IsLog() bool {
 	return log.isLog
 }
 
-func (log *logger) Trace(content interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Trace))
+func (log *logger) Trace(content interface{}) {
+	log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Trace))
 }
 
-func (log *logger) TraceS(content ...interface{}) Logger {
-	return log.writeLog(nil, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Trace))
+func (log *logger) TraceS(content ...interface{}) {
+	log.writeLog(nil, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Trace))
 }
 
-func (log *logger) TraceF(format string, content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Trace))
+func (log *logger) TraceF(format string, content ...interface{}) {
+	log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Trace))
 }
 
-func (log *logger) Debug(content interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Debug))
+func (log *logger) Debug(content interface{}) {
+	log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Debug))
 }
 
-func (log *logger) DebugS(content ...interface{}) Logger {
-	return log.writeLog(nil, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Debug))
+func (log *logger) DebugS(content ...interface{}) {
+	log.writeLog(nil, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Debug))
 }
 
-func (log *logger) DebugF(format string, content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Debug))
+func (log *logger) DebugF(format string, content ...interface{}) {
+	log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Debug))
 }
 
-func (log *logger) Info(content interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Info))
+func (log *logger) Info(content interface{}) {
+	log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Info))
 }
 
-func (log *logger) InfoS(content ...interface{}) Logger {
-	return log.writeLog(nil, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Info))
+func (log *logger) InfoS(content ...interface{}) {
+	log.writeLog(nil, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Info))
 }
 
-func (log *logger) InfoF(format string, content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Info))
+func (log *logger) InfoF(format string, content ...interface{}) {
+	log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Info))
 }
 
-func (log *logger) Warn(content interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Warn))
+func (log *logger) Warn(content interface{}) {
+	log.writeLog(nil, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Warn))
 }
 
-func (log *logger) WarnS(content ...interface{}) Logger {
-	return log.writeLog(nil, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Warn))
+func (log *logger) WarnS(content ...interface{}) {
+	log.writeLog(nil, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Warn))
 }
 
-func (log *logger) WarnF(format string, content ...interface{}) Logger {
-	return log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Warn))
+func (log *logger) WarnF(format string, content ...interface{}) {
+	log.writeLog(nil, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Warn))
 }
 
-func (log *logger) Error(err error, content interface{}) Logger {
-	return log.writeLog(err, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Error))
+func (log *logger) Error(err error, content interface{}) {
+	log.writeLog(err, fmt.Sprint(content), log.getLoggerLevel(_const.LogLevel_Error))
 }
 
-func (log *logger) ErrorS(err error, content ...interface{}) Logger {
-	return log.writeLog(err, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Error))
+func (log *logger) ErrorS(err error, content ...interface{}) {
+	log.writeLog(err, SprintSpacing(content...), log.getLoggerLevel(_const.LogLevel_Error))
 }
 
-func (log *logger) ErrorF(err error, format string, content ...interface{}) Logger {
-	return log.writeLog(err, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Error))
+func (log *logger) ErrorF(err error, format string, content ...interface{}) {
+	log.writeLog(err, fmt.Sprintf(format, content...), log.getLoggerLevel(_const.LogLevel_Error))
 }
 
 func (log *logger) writeLog(err error, content string, level *LoggerLevel) Logger {

@@ -1,5 +1,9 @@
 ## dotlog版本记录：
 
+#### Version 0.9.9
+* Architecture: 调整Logger API定义，日志函数移除Logger返回参数 
+* 2020-01-05 11:00
+
 #### Version 0.9.8
 * Architecture: move xxxxFormat to xxxxF 
 * New Feature: add logger.TraceS\DebugS\InfoS\WarnS\ErrorS(content ...interface{}), default will use SprintSpacing format
