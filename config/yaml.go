@@ -33,6 +33,7 @@ type targetList struct {
 	Http  []httpTargetConfig  `yaml:"http"`
 	EMail []emailTargetConfig `yaml:"email"`
 	Fmt   []fmtTargetConfig   `yaml:"fmt"`
+	JSON  []JSONTargetConfig  `yaml:"json"`
 }
 
 type fileTargetConfig struct {
@@ -122,6 +123,7 @@ func LoadYamlConfig(configFile string) (*AppConfig, error) {
 			HttpTargets:  make([]*HttpTargetConfig, len(yc.Targets.Http)),
 			EMailTargets: make([]*EMailTargetConfig, len(yc.Targets.EMail)),
 			FmtTargets:   make([]*FmtTargetConfig, len(yc.Targets.Fmt)),
+			JSONTargets: make([]*JSONTargetConfig, len(yc.Targets.JSON)),
 		},
 	}
 
@@ -206,6 +208,19 @@ func LoadYamlConfig(configFile string) (*AppConfig, error) {
 			IsLog:  t.IsLog,
 			Layout: t.Layout,
 			Encode: t.Encode,
+		}
+	}
+
+	// Convert JSON targets
+	for i, t := range yc.Targets.JSON {
+		appConfig.Targets.JSONTargets[i] = &JSONTargetConfig{
+			Name:        t.Name,
+			IsLog:       t.IsLog,
+			Layout:      t.Layout,
+			Encode:      t.Encode,
+			FileName:    t.FileName,
+			FileMaxSize: t.FileMaxSize,
+			PrettyPrint: t.PrettyPrint,
 		}
 	}
 
