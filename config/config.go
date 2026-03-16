@@ -71,6 +71,7 @@ type (
 		Encode      string `xml:"encode,attr"`
 		FileMaxSize int64  `xml:"filemaxsize,attr"` //日志文件最大容量，单位为KB
 		FileName    string `xml:"filename,attr"`
+		MaxBackups  int    `xml:"maxbackups,attr"` //保留备份文件数量，0表示不清理
 	}
 
 	UdpTargetConfig struct {

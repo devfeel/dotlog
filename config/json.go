@@ -8,5 +8,6 @@ type JSONTargetConfig struct {
 	Encode      string `yaml:"encode"`
 	FileName    string `yaml:"fileName"`
 	FileMaxSize int64  `yaml:"fileMaxSize"`
+	MaxBackups  int    `yaml:"maxBackups"` // 保留备份文件数量，0 表示不清理
 	PrettyPrint *bool  `yaml:"prettyPrint"`
 }
