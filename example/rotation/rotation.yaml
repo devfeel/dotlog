@@ -1,0 +1,87 @@
+# dotlog 日志轮转配置示例
+# 演示 FileTarget 和 JSONTarget 的轮转功能
+
+global:
+  isLog: true
+  chanSize: 1000
+  innerLogPath: "./logs/"
+  innerLogEncode: "utf-8"
+
+# 自定义变量
+variables:
+  - name: LogDir
+    value: "./logs/"
+
+# 日志输出目标 - 演示轮转功能
+targets:
+  # 文件输出 - 带轮转
+  file:
+    - name: FileLogger
+      isLog: true
+      layout: "{datetime} - {message}"
+      encode: "utf-8"
+      fileMaxSize: 10  # 10KB，测试时使用小值快速触发轮转
+      fileName: "./logs/rotation/app.log"
+      maxBackups: 3    # 保留 3 个备份文件
+
+  # JSON 输出 - 带轮转
+  json:
+    - name: JSONLogger
+      isLog: true
+      layout: "{datetime} - {message}"
+      encode: "utf-8"
+      fileName: "./logs/rotation/app.json"
+      fileMaxSize: 10  # 10KB
+      maxBackups: 3
+      prettyPrint: true
+
+  # 标准输出（无轮转）
+  fmt:
+    - name: StdoutLogger
+      isLog: true
+      layout: "[{level}] {datetime} - {message}"
+      encode: "utf-8"
+
+# 日志记录器配置
+loggers:
+  - name: FileLogger
+    isLog: true
+    layout: "{datetime} - {message}"
+    configMode: "file"
+    levels:
+      - level: trace
+        targets: "FileLogger"
+        isLog: true
+      - level: debug
+        targets: "FileLogger"
+        isLog: true
+      - level: info
+        targets: "FileLogger"
+        isLog: true
+      - level: warn
+        targets: "FileLogger"
+        isLog: true
+      - level: error
+        targets: "FileLogger"
+        isLog: true
+
+  - name: JSONLogger
+    isLog: true
+    layout: "{datetime} - {message}"
+    configMode: "json"
+    levels:
+      - level: info
+        targets: "JSONLogger"
+        isLog: true
+      - level: error
+        targets: "JSONLogger"
+        isLog: true
+
+  - name: StdoutLogger
+    isLog: true
+    layout: "[{level}] {datetime} - {message}"
+    configMode: "fmt"
+    levels:
+      - level: info
+        targets: "StdoutLogger"
+        isLog: true
