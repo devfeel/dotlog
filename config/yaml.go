@@ -43,6 +43,7 @@ type fileTargetConfig struct {
 	Encode      string `yaml:"encode"`
 	FileMaxSize int64  `yaml:"fileMaxSize"`
 	FileName    string `yaml:"fileName"`
+	MaxBackups  int    `yaml:"maxBackups"` // 保留备份文件数量，0 表示不清理
 }
 
 type udpTargetConfig struct {
@@ -160,6 +161,7 @@ func LoadYamlConfig(configFile string) (*AppConfig, error) {
 			Encode:      t.Encode,
 			FileMaxSize: t.FileMaxSize,
 			FileName:    t.FileName,
+			MaxBackups:  t.MaxBackups,
 		}
 	}
 
@@ -220,6 +222,7 @@ func LoadYamlConfig(configFile string) (*AppConfig, error) {
 			Encode:      t.Encode,
 			FileName:    t.FileName,
 			FileMaxSize: t.FileMaxSize,
+			MaxBackups:  t.MaxBackups,
 			PrettyPrint: t.PrettyPrint,
 		}
 	}
