@@ -1,5 +1,12 @@
 ## dotlog版本记录：
 
+#### Version 0.10
+* New Feature: add JSON structured log target
+* Fix: resolve innerlogger.go variadic args compilation error
+* Fix: resolve layout.go string conversion compilation error
+* Fix: resolve lint warnings in multiple files
+* 2026-03-16
+
 #### Version 0.9.9
 * Architecture: 调整Logger API定义，日志函数移除Logger返回参数
 * Fix: 修正FmtTarget在Error级别时输出两遍内容的问题 
