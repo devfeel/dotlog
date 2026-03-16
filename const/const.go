@@ -1,7 +1,7 @@
 package _const
 
 const(
-	Version = "0.10"
+	Version = "0.10.1"
 )
 
 const (

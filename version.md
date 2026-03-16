@@ -1,5 +1,15 @@
 ## dotlog版本记录：
 
+#### Version 0.10.1
+* New Feature: add log rotation support
+* New Feature: add SizeRotator for size-based rotation
+* New Feature: add TimeRotator for time-based rotation
+* New Feature: add MaxBackups config option
+* Fix: fix FileTarget concurrency issue with mutex
+* Fix: fix JSONTarget rotation not implemented
+* Docs: add rotation example
+* 2026-03-16
+
 #### Version 0.10
 * New Feature: add JSON structured log target
 * Fix: resolve innerlogger.go variadic args compilation error
