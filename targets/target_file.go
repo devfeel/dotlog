@@ -1,17 +1,18 @@
 package targets
 
 import (
+	"os"
+	"path/filepath"
+	"strings"
+	"sync"
+	"syscall"
+	"time"
+
 	"github.com/devfeel/dotlog/config"
 	"github.com/devfeel/dotlog/const"
 	"github.com/devfeel/dotlog/internal"
 	"github.com/devfeel/dotlog/layout"
 	"github.com/devfeel/dotlog/util/file"
-	"os"
-	"path"
-	"path/filepath"
-	"strings"
-	"syscall"
-	"time"
 )
 
 type FileTarget struct {
@@ -19,13 +20,20 @@ type FileTarget struct {
 
 	FileName     string
 	FileMaxSize  int64 //日志文件最大字节数
+	MaxBackups   int   // 保留备份文件数量
+	RotateInterval time.Duration // 时间轮转间隔，0 表示不启用
 	RealFileName string
 
 	logChan chan string
+	mu      sync.Mutex
+	rotator Rotator
 }
 
 func NewFileTarget(conf *config.FileTargetConfig) *FileTarget {
-	t := &FileTarget{logChan: make(chan string, GetChanSize())}
+	t := &FileTarget{
+		logChan: make(chan string, GetChanSize()),
+		mu:      sync.Mutex{},
+	}
 	t.TargetType = _const.TargetType_File
 	t.Name = conf.Name
 	t.IsLog = conf.IsLog
@@ -33,18 +41,25 @@ func NewFileTarget(conf *config.FileTargetConfig) *FileTarget {
 	t.Layout = conf.Layout
 	t.FileName = conf.FileName
 	t.FileMaxSize = conf.FileMaxSize * 1024
+	t.MaxBackups = conf.MaxBackups
+
+	// 初始化轮转器
+	if t.FileMaxSize > 0 {
+		t.rotator = NewSizeRotator(t.FileMaxSize/1024, t.MaxBackups)
+	}
+
 	//启动异步写文件
 	go t.handleLog()
 	return t
 }
 
-//GetRealFileName get real filename with compile layout
+// GetRealFileName get real filename with compile layout
 func (t *FileTarget) getRealFileName() string {
-	t.RealFileName = path.Clean(layout.CompileLayout(t.FileName))
+	t.RealFileName = filepath.Clean(layout.CompileLayout(t.FileName))
 	return t.RealFileName
 }
 
-//处理日志内部函数
+// 处理日志内部函数
 func (t *FileTarget) handleLog() {
 	for {
 		log := <-t.logChan
@@ -67,30 +82,12 @@ func (t *FileTarget) WriteLog(log string, useLayout string, level string) {
 }
 
 func (t *FileTarget) writeTarget(log string) {
-	//TODO:如何规避每次都需要CompileLayout?
 	fileName := t.getRealFileName()
 
-	if fileInfo, err := os.Stat(fileName); err != nil {
-		//ignore stat error, fixed for #1 bug: golog.writeTarget os.Stat error
-		//internal.GlobalInnerLogger.Error(err, "golog.writeTarget os.Stat error")
-	} else {
-		if t.FileMaxSize > 0 {
-			//如果设置了FileMaxSize，则进行判断
-			if fileInfo.Size() >= t.FileMaxSize {
-				//modify old filename
-				modifyFileName := fileName + "." + time.Now().Format(_const.DefaultNoSeparatorTimeLayout) + ".logbak"
-				err := os.Rename(fileName, modifyFileName)
-				if err != nil {
-					internal.GlobalInnerLogger.Error(err, "golog.writeTarget os.Rename(", fileName, ", ", modifyFileName, ") error")
-				}
-			}
-		}
-	}
-
+	// 先确保目录存在
 	pathDir := filepath.Dir(fileName)
 	pathExists := _file.Exist(pathDir)
-	if pathExists {
-		//create path
+	if !pathExists {
 		err := os.MkdirAll(pathDir, 0777)
 		if err != nil {
 			internal.GlobalInnerLogger.Error(err, "golog.writeFile create path error")
@@ -98,16 +95,37 @@ func (t *FileTarget) writeTarget(log string) {
 		}
 	}
 
+	// 检查并执行轮转
+	if t.rotator != nil {
+		should, err := t.rotator.ShouldRotate(fileName)
+		if err == nil && should {
+			err = t.rotator.Rotate(fileName)
+			if err != nil {
+				internal.GlobalInnerLogger.Error(err, "FileTarget rotation error")
+			}
+		}
+	}
+
+	// 写入文件
+	t.writeFile(fileName, log)
+}
+
+func (t *FileTarget) writeFile(fileName, content string) {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+
 	var mode os.FileMode
 	flag := syscall.O_RDWR | syscall.O_APPEND | syscall.O_CREAT
 	mode = 0666
-	logstr := log + "\r\n"
+	logstr := content + "\r\n"
+
 	file, err := os.OpenFile(fileName, flag, mode)
 	if err != nil {
 		internal.GlobalInnerLogger.Error(err, "golog.writeFile OpenFile error")
 		return
 	}
 	defer file.Close()
+
 	_, err = file.WriteString(logstr)
 	if err != nil {
 		internal.GlobalInnerLogger.Error(err, "golog.writeFile WriteString error")
