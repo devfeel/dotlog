@@ -12,8 +12,8 @@ type (
 	}
 
 	PosByte struct {
-		isEnd bool
-		val   byte
+		_     bool
+		_     byte
 	}
 
 	LayoutRenderer struct {

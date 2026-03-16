@@ -7,7 +7,10 @@ import (
 )
 
 func main() {
-	dotlog.StartLogService("log.conf")
+	err := dotlog.StartLogService("log.conf")
+	if err != nil {
+		panic(err)
+	}
 	log1 := dotlog.GetLogger("ClassicsLogger")
 	log1.Trace("example-normal trace main")
 	log1.Debug("example-normal debug main")

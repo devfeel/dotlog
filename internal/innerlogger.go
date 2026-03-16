@@ -79,7 +79,7 @@ func (log *InnerLogger) writeLog(err error, content string, level string, fileNa
 func (log *InnerLogger) writeFile(fileName, content string) {
 	pathDir := filepath.Dir(fileName)
 	pathExists := _file.Exist(pathDir)
-	if pathExists == false {
+	if pathExists {
 		//create path
 		err := os.MkdirAll(pathDir, 0777)
 		if err != nil {
@@ -98,5 +98,8 @@ func (log *InnerLogger) writeFile(fileName, content string) {
 
 		return
 	}
-	file.WriteString(logstr)
+	_, err = file.WriteString(logstr)
+	if err != nil {
+		fmt.Println("WriteString error:", err)
+	}
 }

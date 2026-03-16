@@ -89,7 +89,7 @@ func (t *FileTarget) writeTarget(log string) {
 
 	pathDir := filepath.Dir(fileName)
 	pathExists := _file.Exist(pathDir)
-	if pathExists == false {
+	if pathExists {
 		//create path
 		err := os.MkdirAll(pathDir, 0777)
 		if err != nil {
@@ -108,5 +108,8 @@ func (t *FileTarget) writeTarget(log string) {
 		internal.GlobalInnerLogger.Error(err, "golog.writeFile OpenFile error")
 		return
 	}
-	file.WriteString(logstr)
+	_, err = file.WriteString(logstr)
+	if err != nil {
+		internal.GlobalInnerLogger.Error(err, "golog.writeFile WriteString error")
+	}
 }
