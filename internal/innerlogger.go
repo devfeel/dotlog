@@ -93,11 +93,11 @@ func (log *InnerLogger) writeFile(fileName, content string) {
 	mode = 0666
 	logstr := content + "\r\n"
 	file, err := os.OpenFile(fileName, flag, mode)
-	defer file.Close()
 	if err != nil {
 
 		return
 	}
+	defer file.Close()
 	_, err = file.WriteString(logstr)
 	if err != nil {
 		fmt.Println("WriteString error:", err)

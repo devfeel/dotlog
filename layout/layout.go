@@ -79,7 +79,6 @@ func CompileLayout(layout string) string {
 		if ch == '{' {
 			if len(buf) > 0 {
 				renderers = append(renderers, &LayoutRenderer{text: buf})
-				buf = ""
 			}
 			renderers = append(renderers, &LayoutRenderer{text: parseLayoutUnit(t)})
 		} else {
@@ -89,7 +88,6 @@ func CompileLayout(layout string) string {
 	}
 	if len(buf) > 0 {
 		renderers = append(renderers, &LayoutRenderer{text: buf})
-		buf = ""
 	}
 
 	for i := 0; i < len(renderers); i++ {
