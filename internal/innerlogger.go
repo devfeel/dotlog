@@ -38,23 +38,23 @@ func InitInnerLogger(logPath, logEncode string) {
 }
 
 func (log *InnerLogger) Trace(content ...interface{}) *InnerLogger {
-	return log.writeLog(nil, fmt.Sprint(content), _const.LogLevel_Trace, log.TraceFileName)
+	return log.writeLog(nil, fmt.Sprint(content...), _const.LogLevel_Trace, log.TraceFileName)
 }
 
 func (log *InnerLogger) Debug(content ...interface{}) *InnerLogger {
-	return log.writeLog(nil, fmt.Sprint(content), _const.LogLevel_Debug, log.DebugFileName)
+	return log.writeLog(nil, fmt.Sprint(content...), _const.LogLevel_Debug, log.DebugFileName)
 }
 
 func (log *InnerLogger) Info(content ...interface{}) *InnerLogger {
-	return log.writeLog(nil, fmt.Sprint(content), _const.LogLevel_Info, log.InfoFileName)
+	return log.writeLog(nil, fmt.Sprint(content...), _const.LogLevel_Info, log.InfoFileName)
 }
 
 func (log *InnerLogger) Warn(content ...interface{}) *InnerLogger {
-	return log.writeLog(nil, fmt.Sprint(content), _const.LogLevel_Warn, log.WarnFileName)
+	return log.writeLog(nil, fmt.Sprint(content...), _const.LogLevel_Warn, log.WarnFileName)
 }
 
 func (log *InnerLogger) Error(err error, content ...interface{}) *InnerLogger {
-	return log.writeLog(err, fmt.Sprint(content), _const.LogLevel_Error, log.ErrorFileName)
+	return log.writeLog(err, fmt.Sprint(content...), _const.LogLevel_Error, log.ErrorFileName)
 }
 
 func (log *InnerLogger) writeLog(err error, content string, level string, fileName string) *InnerLogger {
@@ -79,7 +79,7 @@ func (log *InnerLogger) writeLog(err error, content string, level string, fileNa
 func (log *InnerLogger) writeFile(fileName, content string) {
 	pathDir := filepath.Dir(fileName)
 	pathExists := _file.Exist(pathDir)
-	if pathExists == false {
+	if pathExists {
 		//create path
 		err := os.MkdirAll(pathDir, 0777)
 		if err != nil {
@@ -93,10 +93,13 @@ func (log *InnerLogger) writeFile(fileName, content string) {
 	mode = 0666
 	logstr := content + "\r\n"
 	file, err := os.OpenFile(fileName, flag, mode)
-	defer file.Close()
 	if err != nil {
 
 		return
 	}
-	file.WriteString(logstr)
+	defer file.Close()
+	_, err = file.WriteString(logstr)
+	if err != nil {
+		fmt.Println("WriteString error:", err)
+	}
 }

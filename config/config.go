@@ -60,7 +60,8 @@ type (
 		UdpTargets   []*UdpTargetConfig   `xml:"udp>target"`
 		HttpTargets  []*HttpTargetConfig  `xml:"http>target"`
 		EMailTargets []*EMailTargetConfig `xml:"email>target"`
-		FmtTargets []*FmtTargetConfig `xml:"fmt>target"`
+		FmtTargets   []*FmtTargetConfig   `xml:"fmt>target"`
+		JSONTargets  []*JSONTargetConfig  `xml:"json>target"`
 	}
 
 	FileTargetConfig struct {
