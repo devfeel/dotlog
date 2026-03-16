@@ -99,7 +99,10 @@ func (t *FileTarget) writeTarget(log string) {
 	if t.rotator != nil {
 		should, err := t.rotator.ShouldRotate(fileName)
 		if err == nil && should {
-			t.rotator.Rotate(fileName)
+			err = t.rotator.Rotate(fileName)
+			if err != nil {
+				internal.GlobalInnerLogger.Error(err, "FileTarget rotation error")
+			}
 		}
 	}
 

@@ -94,7 +94,10 @@ func (t *JSONTarget) writeToFile(log string) {
 	if t.rotator != nil {
 		should, err := t.rotator.ShouldRotate(t.FileName)
 		if err == nil && should {
-			t.rotator.Rotate(t.FileName)
+			err = t.rotator.Rotate(t.FileName)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "dotlog: failed to rotate file: %v\n", err)
+			}
 		}
 	}
 
@@ -122,6 +125,9 @@ func (t *JSONTarget) ensureDir() {
 	}
 	dir := filepath.Dir(t.FileName)
 	if dir != "." && dir != "" {
-		os.MkdirAll(dir, 0777)
+		err := os.MkdirAll(dir, 0777)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "dotlog: failed to create directory: %v\n", err)
+		}
 	}
 }
