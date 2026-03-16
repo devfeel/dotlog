@@ -1,0 +1,75 @@
+# dotlog YAML 配置文件示例
+# 使用说明: 将文件名传递给 StartLogService("config.yaml") 即可
+
+global:
+  isLog: true
+  chanSize: 1000
+  innerLogPath: "./"
+  innerLogEncode: "utf-8"
+
+# 自定义变量
+variables:
+  - name: LogDir
+    value: "./logs/"
+  - name: LogDateDir
+    value: "./logs/{year}/{month}/{day}/"
+
+# 日志输出目标
+targets:
+  # 文件输出
+  file:
+    - name: FileLogger
+      isLog: true
+      layout: "{datetime} - {message}"
+      encode: "utf-8"
+      fileMaxSize: 10240  # KB
+      fileName: "./logs/app.log"
+
+  # 标准输出
+  fmt:
+    - name: StdoutLogger
+      isLog: true
+      layout: "[{level}] {datetime} - {message}"
+      encode: "utf-8"
+
+  # UDP 输出 (可选)
+  # udp:
+  #   - name: UdpLogger
+  #     isLog: true
+  #     layout: "{message}"
+  #     encode: "utf-8"
+  #     remoteIP: "127.0.0.1:9000"
+
+  # HTTP 输出 (可选)
+  # http:
+  #   - name: HttpLogger
+  #     isLog: true
+  #     layout: "{message}"
+  #     encode: "utf-8"
+  #     httpUrl: "http://localhost:8080/log"
+
+# 日志记录器配置
+loggers:
+  - name: FileLogger
+    isLog: true
+    layout: "{datetime} - {message}"
+    configMode: "file"
+    levels:
+      - level: info
+        targets: "FileLogger"
+        isLog: true
+      - level: error
+        targets: "FileLogger"
+        isLog: true
+
+  - name: StdoutLogger
+    isLog: true
+    layout: "[{level}] {datetime} - {message}"
+    configMode: "fmt"
+    levels:
+      - level: debug
+        targets: "StdoutLogger"
+        isLog: true
+      - level: info
+        targets: "StdoutLogger"
+        isLog: true

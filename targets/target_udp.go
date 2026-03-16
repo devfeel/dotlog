@@ -40,10 +40,10 @@ func (t *UdpTarget) WriteLog(log string, useLayout string, level string) {
 				internal.GlobalInnerLogger.Error(err, "UdpTarget:WriteLog:ResolveUDPAddr error", log, t.RemoteIP)
 			}
 			conn, err := net.DialUDP("udp", nil, udpAddr)
-			defer conn.Close()
 			if err != nil {
 				internal.GlobalInnerLogger.Error(err, "UdpTarget:WriteLog:DialUDP error", log, t.RemoteIP)
 			}
+			defer conn.Close()
 			_, err = conn.Write([]byte(logContent))
 			if err != nil {
 				internal.GlobalInnerLogger.Error(err, "UdpTarget:WriteLog:DialUDP error", log, t.RemoteIP)
