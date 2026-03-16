@@ -29,7 +29,8 @@ const (
 	TargetType_Udp   = "Udp"
 	TargetType_Http  = "Http"
 	TargetType_EMail = "EMail"
-	TargetType_Fmt  = "Fmt"
+	TargetType_Fmt   = "Fmt"
+	TargetType_JSON  = "JSON"
 )
 
 const (

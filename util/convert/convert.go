@@ -43,6 +43,9 @@ func NSToTime(ns int64) (time.Time, error) {
 func Bytes2Int(b []byte) int32 {
 	b_buf := bytes.NewBuffer(b)
 	var x int32
-	binary.Read(b_buf, binary.BigEndian, &x)
+	err := binary.Read(b_buf, binary.BigEndian, &x)
+	if err != nil {
+		return 0
+	}
 	return x
 }

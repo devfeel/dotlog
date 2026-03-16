@@ -202,7 +202,10 @@ func EmptyLogger() *logger {
 }
 
 func (log *logger) getLoggerLevel(logLevel string) *LoggerLevel {
-	level, _ := log.loggerLevelMap[logLevel]
+	level, ok := log.loggerLevelMap[logLevel]
+	if !ok {
+		return nil
+	}
 	return level
 }
 

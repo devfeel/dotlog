@@ -1,6 +1,9 @@
 package layout
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 type (
 	Token struct {
@@ -9,8 +12,8 @@ type (
 	}
 
 	PosByte struct {
-		isEnd bool
-		val   byte
+		_     bool
+		_     byte
 	}
 
 	LayoutRenderer struct {
@@ -53,7 +56,7 @@ func parseLayoutUnit(t *Token) string {
 			val += "}"
 			break
 		}
-		val += string(ch)
+		val += strconv.Itoa(ch)
 		t.Read()
 	}
 	return val
@@ -76,17 +79,15 @@ func CompileLayout(layout string) string {
 		if ch == '{' {
 			if len(buf) > 0 {
 				renderers = append(renderers, &LayoutRenderer{text: buf})
-				buf = ""
 			}
 			renderers = append(renderers, &LayoutRenderer{text: parseLayoutUnit(t)})
 		} else {
-			buf += string(ch)
+			buf += strconv.Itoa(ch)
 		}
 		t.Read()
 	}
 	if len(buf) > 0 {
 		renderers = append(renderers, &LayoutRenderer{text: buf})
-		buf = ""
 	}
 
 	for i := 0; i < len(renderers); i++ {
